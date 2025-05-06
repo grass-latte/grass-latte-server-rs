@@ -1,9 +1,10 @@
 use std::io::{stdin, stdout, Write};
 use std::thread;
 use std::time::Duration;
-use grass_latte::{serve_webpage};
+use grass_latte::{serve_webpage, set_port_range};
 
 fn main() {
+    set_port_range((3030, 3030));
     serve_webpage();
 
     grass_latte::send_node(["a", "b", "c"]);
