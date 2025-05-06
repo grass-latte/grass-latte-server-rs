@@ -1,12 +1,16 @@
 use std::io::{stdin, stdout, Write};
-use grass_latte::{serve_webpage, SendTypes};
+use std::thread;
+use std::time::Duration;
+use grass_latte::{serve_webpage};
 
 fn main() {
     serve_webpage();
-    
-    for i in 0..100 {
-        grass_latte::send(SendTypes::Charlie(format!("{}", i)));
-    }
+
+    grass_latte::send_node(["a", "b", "c"]);
+    grass_latte::send_node(["a", "d"]);
+
+    thread::sleep(Duration::from_millis(5000));
+    grass_latte::delete_element(["a", "b", "c"]);
 
     println!("Press enter to exit");
     stdout().flush().ok();
