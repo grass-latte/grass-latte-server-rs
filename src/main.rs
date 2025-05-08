@@ -1,5 +1,6 @@
-use grass_latte::{serve_webpage, set_port_range};
+use grass_latte::{serve_webpage, serve_webpage_at_port, set_port_range};
 use std::io::{stdin, stdout, Write};
+use std::num::ParseIntError;
 use clap::Parser;
 use derive_getters::Getters;
 
@@ -8,6 +9,8 @@ use derive_getters::Getters;
 pub struct Args {
     #[arg(short, long, action, help = "Port range for the server to listen on e.g. 3030-3040")]
     port_range: Option<String>,
+    #[arg(short, long, action, help = "Port to serve web page on e.g. 8000")]
+    web_port: Option<String>
 }
 
 fn parse_range(input: &str) -> Result<(u16, u16), String> {
@@ -42,7 +45,20 @@ fn main() {
         println!("Server will listen on default ports");
     }
 
-    serve_webpage();
+    if let Some(web_port) = args.web_port() {
+        let web_port = match web_port.trim().parse::<u16>() {
+            Ok(p) => p,
+            Err(e) => {
+                println!("{e}");
+                return;
+            }
+        };
+        
+        serve_webpage_at_port(web_port);
+    }
+    else {
+        serve_webpage();
+    }
 
     println!("Press enter to exit server");
     stdout().flush().ok();
