@@ -283,6 +283,7 @@ name = "grass-latte"
 version = "0.1.0"
 dependencies = [
  "crossbeam",
+ "derive-getters",
  "derive-new",
  "once_cell",
  "serde",
